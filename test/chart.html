@@ -5,7 +5,7 @@
   <script>
     function handleClick() {
 
-      var data = JSON.parse(document.querySelector('#options').innerHTML);
+      var data = JSON.parse(document.querySelector('#options').value);
       var height = document.querySelector('#height').value;
       var width = document.querySelector('#width').value;
       var type = document.querySelector('#type').value;
@@ -55,26 +55,46 @@
       height: 400px;
       overflow: auto;
     }
+
+    select,
+    input {
+      display: inline-block;
+      width: 80px;
+    }
+
+    td {
+      min-width: 250px;
+    }
+
+    textarea {
+      display: inline-block;
+      width: 100%;
+      min-height: 400px;
+    }
   </style>
 </head>
 
 <body>
+  <table>
+    <tr>
+      <td>
 
-  <div id="myImageSvg" class="result svg"></div>
-  <img id="myImagePng" class="result image" src="" />
-  <iframe id="myImagePdf" class="result pdf" href=""></iframe>
-  <hr />
-  <select id="type">
-    <option selected value="svg">SVG</option>
-    <option value="image">PNG</option>
-    <option value="pdf">PDF</option>
-  </select>
-  <input id="height" type="number" value="400" />
-  X
-  <input id="width" type="number" value="1200" />
-  <button onclick="handleClick()">Fetch</button>
-  <hr />
-  <textarea id="options" style="width:50%;height:50%">{
+        <input id="height" type="number" value="400" />
+        X
+        <input id="width" type="number" value="1200" />
+        <br />
+        <br />
+        <br />
+        <select id="type">
+          <option selected value="svg">SVG</option>
+          <option value="image">PNG</option>
+          <option value="pdf">PDF</option>
+        </select>
+        <button onclick="handleClick()">Fetch</button>
+        <br />
+        <br />
+        <br />
+        <textarea id="options" style="width:100%;height:50%">{
     "title": {
       "text": "Random Items",
       "left": "center",
@@ -161,6 +181,15 @@
       }
     ]
   }</textarea>
+      </td>
+      <td>
+        <div id="myImageSvg" class="result svg"></div>
+        <img id="myImagePng" class="result image" src="" />
+        <iframe id="myImagePdf" class="result pdf" href=""></iframe>
+      </td>
+    </tr>
+  </table>
+
 
   <script>
     document.querySelectorAll('.result').forEach(x => {
