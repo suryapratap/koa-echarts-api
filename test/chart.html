@@ -1,0 +1,176 @@
+<html>
+
+<head>
+
+  <script>
+    function handleClick() {
+
+      var data = JSON.parse(document.querySelector('#options').innerHTML);
+      var height = document.querySelector('#height').value;
+      var width = document.querySelector('#width').value;
+      var type = document.querySelector('#type').value;
+
+      var imageUrl = `http://localhost:5000/chart/${type}/${height}/${width}`;
+      var fetchOpts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      };
+
+      var adaptor = {
+        svg: (response) => response.text(),
+        image: (response) => response.text(),
+        pdf: (response) => response.arrayBuffer()
+      };
+
+      var renderer = {
+        svg: (svg) => document.querySelector("#myImageSvg").innerHTML = svg,
+        image: (image) => document.querySelector("#myImagePng").src = image,
+        pdf: (pdf) => {
+          console.log(pdf);
+          var url = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }))
+          console.log(url);
+          document.querySelector("#myImagePdf").src = url
+        }
+      }
+
+      fetch(imageUrl, fetchOpts)
+        .then(adaptor[type])
+        .then(renderer[type])
+
+      document.querySelectorAll('.result').forEach(x => {
+        x.style.display = 'none';
+      });
+
+      document.querySelectorAll('.' + type).forEach(x => {
+        x.style.display = 'block';
+      });
+
+
+    }
+
+  </script>
+  <style>
+    .result {
+      height: 400px;
+      overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="myImageSvg" class="result svg"></div>
+  <img id="myImagePng" class="result image" src="" />
+  <iframe id="myImagePdf" class="result pdf" href=""></iframe>
+  <hr />
+  <select id="type">
+    <option selected value="svg">SVG</option>
+    <option value="image">PNG</option>
+    <option value="pdf">PDF</option>
+  </select>
+  <input id="height" type="number" value="400" />
+  X
+  <input id="width" type="number" value="1200" />
+  <button onclick="handleClick()">Fetch</button>
+  <hr />
+  <textarea id="options" style="width:50%;height:50%">{
+            "title": {
+              "text": "Random Items",
+              "left": "center",
+              "top": "10px",
+              "textStyle": {
+                "color": "#a7a7a7",
+                "fontSize": 16
+              }
+            },
+            "tooltip": {
+              "trigger": "item"
+            },
+            "xAxis": {
+              "type": "value",
+              "min": "0",
+              "max": "100"
+            },
+            "axisLabel": {
+              "color": "#a7a7a7"
+            },
+            "yAxis": {
+              "type": "category",
+              "inverse": true,
+              "data": [
+                "01. PROGRAM PLANNING",
+                "02. RISK MANAGEMENT",
+                "03. IT SECURITY",
+                "04. ASSET & INVENTORY",
+                "05. VEHICLE CONTROL",
+                "06. PHYSICAL INSPECTION",
+                "07. LIFT OPERATORS",
+                "09. SYSTEMS",
+                "10. THIRD-PARTY COMMUNICATIONS",
+                "11. INCIDENT RESPONSE",
+                "12. PROGRAM CONTINUITY",
+              ]
+            },
+            "grid": {
+              "top": "80px",
+              "left": "330px",
+              "right": "100px",
+              "bottom": "40px"
+            },
+            "visualMap": {
+              "orient": "vertical",
+              "right": "10px",
+              "bottom": "center",
+              "min": 0,
+              "max": 100,
+              "text": [
+                "High Score",
+                "Low Score"
+              ],
+              "dimension": 0,
+              "inRange": {
+                "color": [
+                  "#BB280F",
+                  "#e44a00",
+                  "#f8bd19",
+                  "#6baa01"
+                ]
+              }
+            },
+            "series": [
+              {
+                "type": "bar",
+                "showBackground": true,
+                "backgroundStyle": {
+                  "color": "rgba(180, 180, 180, 0.1)"
+                },
+                "data": [
+                  71.2,
+                  92.27,
+                  0,
+                  0,
+                  3.65,
+                  0,
+                  4.62,
+                  0,
+                  0,
+                  1.81,
+                  0
+                ]
+              }
+            ]
+          }</textarea>
+
+  <script>
+    document.querySelectorAll('.result').forEach(x => {
+      x.style.display = 'none';
+    });
+
+    document.querySelectorAll('.svg').forEach(x => {
+      x.style.display = 'block';
+    });
+  </script>
+</body>
+
+</html>

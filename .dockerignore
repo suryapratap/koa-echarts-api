@@ -1,0 +1,8 @@
+.git
+.github
+node_modules
+npm-debug.log
+.env
+ascent.config
+run_dev.ps1
+www
